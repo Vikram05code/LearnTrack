@@ -122,6 +122,15 @@ Layered design:
 * Inheritance (Person → Student, Trainer)
 * Polymorphism (method overriding)
 
+# Polymorphism Example
+
+Method overriding is demonstrated using the getDisplayName() method:
+
+* Person provides a base implementation
+* Student and Trainer override it with specialized behavior
+
+This shows runtime polymorphism in action.
+
 ###  Java Basics
 
 * Variables & data types
@@ -221,8 +230,6 @@ Relationships:
 - `EnrollmentService` **uses** `StudentService` and `CourseService` to validate IDs
 - `Main` **uses** all three services
 - `Course` uses `CourseStatus` enum; `Enrollment` uses `EnrollmentStatus` enum
-
----
 
 ---
 

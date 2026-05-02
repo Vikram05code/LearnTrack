@@ -68,6 +68,7 @@ learntrack/
                 ├── entity/
                 │   ├── Person.java
                 │   ├── Student.java
+                │   ├── Trainer.java
                 │   ├── Course.java
                 │   └── Enrollment.java
                 │
@@ -118,7 +119,7 @@ Layered design:
 ###  OOP Concepts
 
 * Encapsulation (private fields + getters/setters)
-* Inheritance (Person → Student)
+* Inheritance (Person → Student, Trainer)
 * Polymorphism (method overriding)
 
 ###  Java Basics
@@ -154,8 +155,6 @@ java com.airtribe.learntrack.Main
 
 ---
 
-
-
 ## Class Diagram
 
 ```
@@ -169,18 +168,18 @@ java com.airtribe.learntrack.Main
                        +-------------------+
                        | + getDisplayName()|
                        +-------------------+
-                                 ^
-                                 |
-                                 |  extends
-                                 |
-                       +-------------------+
-                       |     Student       |
-                       +-------------------+
-                       | - batch           |
-                       | - active          |
-                       +-------------------+
-                       | + getDisplayName()|
-                       +-------------------+
+                          ^             ^
+                          |             |
+              extends     |             | extends
+                          |             |
+             +-------------------+   +----------------------+
+             |     Student       |   |      Trainer         |
+             +-------------------+   +----------------------+
+             | - batch           |   | - specialization     |
+             | - active          |   +----------------------+
+             +-------------------+   | + getDisplayName()  |
+             | + getDisplayName()|   +----------------------+
+             +-------------------+
 
    +-------------------+        +-----------------------+       
    |      Course       |        |      Enrollment       |
@@ -193,33 +192,25 @@ java com.airtribe.learntrack.Main
    +-------------------+        +-----------------------+
             |                              |
    uses CourseStatus              uses EnrollmentStatus
-   { ACTIVE, INACTIVE }      { ACTIVE, COMPLETED, CANCELLED }
 
 
-   Repositories  (in-memory storage layer — ArrayList<T>)
+   Repositories (ArrayList storage)
    +------------------------+ +-----------------------+ +----------------------------+
    |  StudentRepository     | |  CourseRepository     | |  EnrollmentRepository      |
-   |  ArrayList<Student>    | |  ArrayList<Course>    | |  ArrayList<Enrollment>     |
    +------------------------+ +-----------------------+ +----------------------------+
-              ^                          ^                          ^
-              |                          |                          |
-   Services  (business logic — depend on repositories)
+
+   Services (Business Logic)
    +------------------------+ +-----------------------+ +----------------------------+
    |  StudentService        | |  CourseService        | |  EnrollmentService         |
    +------------------------+ +-----------------------+ +----------------------------+
-              ^                          ^                  ^   ^
-              |                          |                  |   |
-              +------- depends on -------+------------------+   |
-                                                                |
-                                       Main (UI, menu loop) ----+
 
-       Utilities                       Exceptions                       Constants
+                    Main (UI - Menu Driven Application)
+
+   Utilities & Support
    +---------------------+      +---------------------------+      +------------------+
    |   IdGenerator       |      |  EntityNotFoundException  |      |  AppConstants    |
-   |   (static counters) |      |  InvalidInputException    |      |  MenuOptions     |
+   |   InputValidator    |      |  InvalidInputException    |      |  MenuOptions     |
    +---------------------+      +---------------------------+      +------------------+
-   |   InputValidator    |
-   +---------------------+
 ```
 
 Relationships:

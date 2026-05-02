@@ -242,6 +242,16 @@ ArrayList is dynamic in size and provides built-in methods for adding, removing,
 * Student extends Person.
 * This avoids code duplication and improves reusability.
 
+### Use of Trainer Class
+
+A Trainer class is introduced to further demonstrate inheritance and polymorphism.
+
+* Trainer extends Person
+* Overrides getDisplayName() to include specialization
+* Shows how multiple subclasses can extend a common base class
+
+This helps reinforce real-world OOP hierarchy design.
+
 ---
 
 ## ⚠️ Assumptions

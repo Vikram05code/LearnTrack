@@ -68,6 +68,7 @@ learntrack/
                 ├── entity/
                 │   ├── Person.java
                 │   ├── Student.java
+                │   ├── Trainer.java
                 │   ├── Course.java
                 │   └── Enrollment.java
                 │
@@ -118,8 +119,17 @@ Layered design:
 ###  OOP Concepts
 
 * Encapsulation (private fields + getters/setters)
-* Inheritance (Person → Student)
+* Inheritance (Person → Student, Trainer)
 * Polymorphism (method overriding)
+
+# Polymorphism Example
+
+Method overriding is demonstrated using the getDisplayName() method:
+
+* Person provides a base implementation
+* Student and Trainer override it with specialized behavior
+
+This shows runtime polymorphism in action.
 
 ###  Java Basics
 
@@ -154,8 +164,6 @@ java com.airtribe.learntrack.Main
 
 ---
 
-
-
 ## Class Diagram
 
 ```
@@ -169,18 +177,18 @@ java com.airtribe.learntrack.Main
                        +-------------------+
                        | + getDisplayName()|
                        +-------------------+
-                                 ^
-                                 |
-                                 |  extends
-                                 |
-                       +-------------------+
-                       |     Student       |
-                       +-------------------+
-                       | - batch           |
-                       | - active          |
-                       +-------------------+
-                       | + getDisplayName()|
-                       +-------------------+
+                          ^             ^
+                          |             |
+              extends     |             | extends
+                          |             |
+             +-------------------+   +----------------------+
+             |     Student       |   |      Trainer         |
+             +-------------------+   +----------------------+
+             | - batch           |   | - specialization     |
+             | - active          |   +----------------------+
+             +-------------------+   | + getDisplayName()  |
+             | + getDisplayName()|   +----------------------+
+             +-------------------+
 
    +-------------------+        +-----------------------+       
    |      Course       |        |      Enrollment       |
@@ -193,33 +201,25 @@ java com.airtribe.learntrack.Main
    +-------------------+        +-----------------------+
             |                              |
    uses CourseStatus              uses EnrollmentStatus
-   { ACTIVE, INACTIVE }      { ACTIVE, COMPLETED, CANCELLED }
 
 
-   Repositories  (in-memory storage layer — ArrayList<T>)
+   Repositories (ArrayList storage)
    +------------------------+ +-----------------------+ +----------------------------+
    |  StudentRepository     | |  CourseRepository     | |  EnrollmentRepository      |
-   |  ArrayList<Student>    | |  ArrayList<Course>    | |  ArrayList<Enrollment>     |
    +------------------------+ +-----------------------+ +----------------------------+
-              ^                          ^                          ^
-              |                          |                          |
-   Services  (business logic — depend on repositories)
+
+   Services (Business Logic)
    +------------------------+ +-----------------------+ +----------------------------+
    |  StudentService        | |  CourseService        | |  EnrollmentService         |
    +------------------------+ +-----------------------+ +----------------------------+
-              ^                          ^                  ^   ^
-              |                          |                  |   |
-              +------- depends on -------+------------------+   |
-                                                                |
-                                       Main (UI, menu loop) ----+
 
-       Utilities                       Exceptions                       Constants
+                    Main (UI - Menu Driven Application)
+
+   Utilities & Support
    +---------------------+      +---------------------------+      +------------------+
    |   IdGenerator       |      |  EntityNotFoundException  |      |  AppConstants    |
-   |   (static counters) |      |  InvalidInputException    |      |  MenuOptions     |
+   |   InputValidator    |      |  InvalidInputException    |      |  MenuOptions     |
    +---------------------+      +---------------------------+      +------------------+
-   |   InputValidator    |
-   +---------------------+
 ```
 
 Relationships:
@@ -230,8 +230,6 @@ Relationships:
 - `EnrollmentService` **uses** `StudentService` and `CourseService` to validate IDs
 - `Main` **uses** all three services
 - `Course` uses `CourseStatus` enum; `Enrollment` uses `EnrollmentStatus` enum
-
----
 
 ---
 
@@ -250,6 +248,16 @@ ArrayList is dynamic in size and provides built-in methods for adding, removing,
 * Person is a base class.
 * Student extends Person.
 * This avoids code duplication and improves reusability.
+
+### Use of Trainer Class
+
+A Trainer class is introduced to further demonstrate inheritance and polymorphism.
+
+* Trainer extends Person
+* Overrides getDisplayName() to include specialization
+* Shows how multiple subclasses can extend a common base class
+
+This helps reinforce real-world OOP hierarchy design.
 
 ---
 
